@@ -7,7 +7,7 @@ namespace skiruta
   {
     int count = 0;
     int prev = 0;
-    int n;
+    int n = 0;
     for (int nums = 0; ; nums++)
     {
       if (!(std::cin >> n))
@@ -33,7 +33,8 @@ namespace skiruta
 
 int main()
 {
-  try {
+  try
+  {
     std::cout << skiruta::countDelimie() << std::endl;
     return 0;
   }
@@ -42,7 +43,7 @@ int main()
     std::cerr << e.what() << std::endl;
     return 1;
   }
-  catch(const std::runtime_error& e)
+  catch (const std::runtime_error& e)
   {
     std::cerr << e.what() << std::endl;
     return 2;
