@@ -8,8 +8,7 @@ namespace skiruta
     int count = 0;
     int prev = 0;
     int n = 0;
-    for (int nums = 0; ; nums++)
-    {
+    for (int nums = 0; ; nums++) {
       if (!(std::cin >> n))
       {
         throw std::invalid_argument("Error: input must be integer");
