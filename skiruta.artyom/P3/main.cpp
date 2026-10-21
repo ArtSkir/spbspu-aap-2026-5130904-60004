@@ -122,7 +122,7 @@ int main(int argc, char *argv[])
     {
       throw std::bad_alloc();
     }
-    const char *mode = argv[1];
+    const char *const mode = argv[1];
     if (strcmp(mode, "2") && strcmp(mode, "1"))
     {
       throw std::runtime_error("Wrong first argument (1 or 2 expected)");
