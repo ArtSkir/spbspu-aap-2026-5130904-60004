@@ -6,7 +6,7 @@
 
 namespace skiruta
 {
-  void safeAllocMatrix(int **&m, unsigned &w, unsigned &h)
+  void safeAllocMatrix(int **&m, size_t &w, size_t &h)
   {
     try
     {
@@ -22,7 +22,7 @@ namespace skiruta
     }
   }
 
-  void freeMatrix(int **&m, unsigned &w, unsigned &h)
+  void freeMatrix(int **&m, size_t &h)
   {
     for (int i = 0; i < h; i++)
     {
@@ -39,7 +39,7 @@ namespace skiruta
   }
 
   template< typename T >
-  void readMatrix(std::ifstream &f, T &m, unsigned &w, unsigned &h)
+  void readMatrix(std::ifstream &f, T &m, size_t &w, size_t &h)
   {
     for (int i = 0; i < h; i++)
     {
@@ -55,7 +55,7 @@ namespace skiruta
   }
 
   template< typename T >
-  void incrMatrix(T &m, unsigned &w, unsigned &h)
+  void incrMatrix(T &m, size_t &w, size_t &h)
   {
     int top = 0, bottom = h - 1, left = 0, right = w - 1;
     int inc = 1;
@@ -91,7 +91,7 @@ namespace skiruta
   }
 
   template< typename T >
-  void transMatrixToFile(std::ofstream &f, T m, unsigned &w, unsigned &h)
+  void transMatrixToFile(std::ofstream &f, T m, size_t &w, size_t &h)
   {
     f << w << " " << h;
     for (int i = 0; i < h; i++)
@@ -109,7 +109,7 @@ namespace skiruta
 int main(int argc, char *argv[])
 {
   int **matrix = nullptr;
-  unsigned width = 0, height = 0;
+  size_t width = 0, height = 0;
   try
   {
     if (argc != 4)
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
     }
     if (!strcmp(mode, "1"))
     {
-      const unsigned hMax = 99, wMax = 100;
+      const int hMax = 99, wMax = 100;
       int fm[hMax][wMax];
       skiruta::readMatrix(file, fm, width, height);
       skiruta::incrMatrix(fm, width, height);
@@ -146,13 +146,13 @@ int main(int argc, char *argv[])
       skiruta::readMatrix(file, matrix, width, height);
       skiruta::incrMatrix(matrix, width, height);
       skiruta::transMatrixToFile(out, matrix, width, height);
-      skiruta::freeMatrix(matrix, width, height);
+      skiruta::freeMatrix(matrix, height);
     }
   }
   catch (const std::runtime_error &e)
   {
     std::cerr << e.what() << "\n";
-    skiruta::freeMatrix(matrix, width, height);
+    skiruta::freeMatrix(matrix, height);
     return 1;
   }
   catch (const std::bad_alloc &)
