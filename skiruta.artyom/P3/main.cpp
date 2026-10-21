@@ -6,7 +6,7 @@
 
 namespace skiruta
 {
-  void safeAllocMatrix(int **&m, size_t &w, size_t &h)
+  void safeAllocMatrix(int **&m, int &w, int &h)
   {
     try
     {
@@ -22,7 +22,7 @@ namespace skiruta
     }
   }
 
-  void freeMatrix(int **&m, size_t &h)
+  void freeMatrix(int **&m, int &h)
   {
     for (int i = 0; i < h; i++)
     {
@@ -39,7 +39,7 @@ namespace skiruta
   }
 
   template< typename T >
-  void readMatrix(std::ifstream &f, T &m, size_t &w, size_t &h)
+  void readMatrix(std::ifstream &f, T &m, int &w, int &h)
   {
     for (int i = 0; i < h; i++)
     {
@@ -55,7 +55,7 @@ namespace skiruta
   }
 
   template< typename T >
-  void incrMatrix(T &m, size_t &w, size_t &h)
+  void incrMatrix(T &m, int &w, int &h)
   {
     int top = 0, bottom = h - 1, left = 0, right = w - 1;
     int inc = 1;
@@ -91,7 +91,7 @@ namespace skiruta
   }
 
   template< typename T >
-  void transMatrixToFile(std::ofstream &f, T m, size_t &w, size_t &h)
+  void transMatrixToFile(std::ofstream &f, T m, int &w, int &h)
   {
     f << w << " " << h;
     for (int i = 0; i < h; i++)
@@ -109,7 +109,7 @@ namespace skiruta
 int main(int argc, char *argv[])
 {
   int **matrix = nullptr;
-  size_t width = 0, height = 0;
+  int width = 0, height = 0;
   try
   {
     if (argc != 4)
@@ -128,13 +128,13 @@ int main(int argc, char *argv[])
       throw std::runtime_error("Wrong first argument (1 or 2 expected)");
     }
     file >> height >> width;
-    if (file.fail())
+    if (file.fail() || height < 0 || width < 0)
     {
       throw std::bad_alloc();
     }
     if (!strcmp(mode, "1"))
     {
-      const int hMax = 99, wMax = 100;
+      const int hMax = 100, wMax = 100;
       int fm[hMax][wMax];
       skiruta::readMatrix(file, fm, width, height);
       skiruta::incrMatrix(fm, width, height);
