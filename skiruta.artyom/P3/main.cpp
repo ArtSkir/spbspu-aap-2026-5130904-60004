@@ -8,34 +8,27 @@ namespace skiruta
 {
   void safeAllocMatrix(int **&m, int &w, int &h)
   {
-    try
+    m = new int *[h]();
+    for (int i = 0; i < h; i++)
     {
-      m = new int *[h];
-      for (int i = 0; i < h; i++)
-      {
-        m[i] = new int[w];
-      }
-    }
-    catch (const std::bad_alloc &)
-    {
-      throw std::bad_alloc();
+      m[i] = new int[w];
     }
   }
 
   void freeMatrix(int **&m, int &h)
   {
-    for (int i = 0; i < h; i++)
-    {
-      if (m[i])
-      {
-        delete[] m[i];
-      }
-    }
     if (m)
     {
+      for (int i = 0; i < h; i++)
+      {
+        if (m[i])
+        {
+          delete[] m[i];
+        }
+      }
       delete[] m;
+      m = nullptr;
     }
-    m = nullptr;
   }
 
   template< typename T >
@@ -105,7 +98,6 @@ namespace skiruta
   }
 }
 
-
 int main(int argc, char *argv[])
 {
   int **matrix = nullptr;
@@ -146,7 +138,6 @@ int main(int argc, char *argv[])
       skiruta::readMatrix(file, matrix, width, height);
       skiruta::incrMatrix(matrix, width, height);
       skiruta::transMatrixToFile(out, matrix, width, height);
-      skiruta::freeMatrix(matrix, height);
     }
   }
   catch (const std::runtime_error &e)
@@ -158,7 +149,9 @@ int main(int argc, char *argv[])
   catch (const std::bad_alloc &)
   {
     std::cerr << "Error with memory, matrix or opening file\n";
+    skiruta::freeMatrix(matrix, height);
     return 2;
   }
+  skiruta::freeMatrix(matrix, height);
   return 0;
 }
