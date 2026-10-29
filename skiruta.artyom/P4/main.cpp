@@ -16,9 +16,9 @@ namespace skiruta
     char c = 0;
     while (std::cin.get(c) && c != '\n' && buf)
     {
-      *(buf+size) = c;
+      *(buf + size) = c;
       size++;
-      char *tmp = static_cast< char * >(realloc(buf, size+1));
+      char *tmp = static_cast< char * >(realloc(buf, size + 1));
       if (!tmp)
       {
         free(buf);
@@ -44,7 +44,7 @@ namespace skiruta
     char *const seen = new char[s + 1]();
     for (size_t i = 0; i < s; i++)
     {
-      *(seen+i) = ' ';
+      *(seen + i) = ' ';
       if (!(strchr(seen, *(t + i))) && std::isalpha(static_cast< unsigned char >(*(t + i))))
       {
         seen[count++] = *(t + i);
