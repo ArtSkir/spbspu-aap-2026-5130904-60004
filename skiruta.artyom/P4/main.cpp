@@ -68,14 +68,7 @@ int main()
       free(t);
       return 1;
     }
-    if (t)
-    {
-      std::cout << skiruta::countDifLat(t, s) << std::endl;
-    }
-    else
-    {
-      throw std::bad_alloc();
-    }
+    std::cout << skiruta::countDifLat(t, s) << std::endl;
     free(t);
   }
   catch (const std::bad_alloc &)
