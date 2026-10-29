@@ -18,7 +18,7 @@ namespace skiruta
     {
       *(buf + size) = c;
       size++;
-      char *tmp = static_cast< char * >(realloc(buf, size + 1));
+      char *const tmp = static_cast< char * >(realloc(buf, size + 1));
       if (!tmp)
       {
         free(buf);
