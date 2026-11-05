@@ -41,31 +41,31 @@ namespace skiruta
   {
     DimRev()
     {
-      totalNums_ = Counter();
-      prevNum_ = PrevNum();
-      amountOfDivisibleNums_ = 0;
+      total_nums_ = Counter();
+      prev_num_ = PrevNum();
+      amount_of_divisible_nums_ = 0;
     }
     void operator()(int n)
     {
-      if (prevNum_() && n % prevNum_() == 0)
+      if (prev_num_() && n % prev_num_() == 0)
       {
-        amountOfDivisibleNums_++;
+        amount_of_divisible_nums_++;
       }
-      prevNum_(n);
-      totalNums_(n);
+      prev_num_(n);
+      total_nums_(n);
     }
     size_t operator()() const
     {
-      if (totalNums_() < 2)
+      if (total_nums_() < 2)
       {
         throw std::runtime_error("Not enough numbers");
       }
-      return amountOfDivisibleNums_;
+      return amount_of_divisible_nums_;
     }
   private:
-    Counter totalNums_;
-    PrevNum prevNum_;
-    size_t amountOfDivisibleNums_;
+    Counter total_nums_;
+    PrevNum prev_num_;
+    size_t amount_of_divisible_nums_;
   };
 }
 
