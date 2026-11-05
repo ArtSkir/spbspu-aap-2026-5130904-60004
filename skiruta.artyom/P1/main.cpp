@@ -7,65 +7,65 @@ namespace skiruta
   {
     Counter()
     {
-      count = 0;
+      count_ = 0;
     }
     size_t operator()() const
     {
-      return count;
+      return count_;
     }
     void operator()(int)
     {
-      count++;
+      count_++;
     }
   private:
-    size_t count;
+    size_t count_;
   };
   struct PrevNum
   {
     PrevNum()
     {
-      prev = 0;
+      prev_ = 0;
     }
     void operator()(int p)
     {
-      prev = p;
+      prev_ = p;
     }
     int operator()() const
     {
-      return prev;
+      return prev_;
     }
   private:
-    int prev;
+    int prev_;
   };
   struct DimRev
   {
     DimRev()
     {
-      totalNums = Counter();
-      prevNum = PrevNum();
-      amountOfDivisibleNums = 0;
+      totalNums_ = Counter();
+      prevNum_ = PrevNum();
+      amountOfDivisibleNums_ = 0;
     }
     void operator()(int n)
     {
-      if (prevNum() && n % prevNum() == 0)
+      if (prevNum_() && n % prevNum_() == 0)
       {
-        amountOfDivisibleNums++;
+        amountOfDivisibleNums_++;
       }
-      prevNum(n);
-      totalNums(n);
+      prevNum_(n);
+      totalNums_(n);
     }
     size_t operator()() const
     {
-      if (totalNums() < 2)
+      if (totalNums_() < 2)
       {
         throw std::runtime_error("Not enough numbers");
       }
-      return amountOfDivisibleNums;
+      return amountOfDivisibleNums_;
     }
   private:
-    Counter totalNums;
-    PrevNum prevNum;
-    size_t amountOfDivisibleNums;
+    Counter totalNums_;
+    PrevNum prevNum_;
+    size_t amountOfDivisibleNums_;
   };
 }
 
