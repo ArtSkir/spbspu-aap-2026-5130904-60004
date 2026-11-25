@@ -4,6 +4,32 @@
 
 namespace nozdracheva
 {
+  class ISeqProperty
+  {
+  public:
+    void operator()(int n);
+    int operator()() const;
+    virtual ~ISeqProperty() = default;
+
+  private:
+    virtual void next(int n) = 0;
+    virtual int result() const = 0;
+  };
+
+  class SubMaxCounter: public ISeqProperty
+  {
+  public:
+    SubMaxCounter();
+
+  private:
+    int max1_;
+    int max2_;
+    int c_;
+
+    void next(int n) override;
+    int result() const override;
+  };
+
   int findSubMax();
 }
 
@@ -29,12 +55,57 @@ int main()
 
 namespace nozdracheva
 {
+  void ISeqProperty::operator()(int n)
+  {
+    next(n);
+  }
+
+  int ISeqProperty::operator()() const
+  {
+    return result();
+  }
+
+  SubMaxCounter::SubMaxCounter():
+    max1_(INT_MIN),
+    max2_(INT_MIN),
+    c_(0)
+  {}
+
+  void SubMaxCounter::next(int n)
+  {
+    if (c_ == INT_MAX)
+    {
+      throw std::overflow_error("Sequence is too long");
+    }
+
+    ++c_;
+
+    if (n >= max1_)
+    {
+      max2_ = max1_;
+      max1_ = n;
+    }
+    else if (n > max2_)
+    {
+      max2_ = n;
+    }
+  }
+
+  int SubMaxCounter::result() const
+  {
+    if (c_ < 2)
+    {
+      throw std::overflow_error("Sequence is too short");
+    }
+
+    return max2_;
+  }
+
   int findSubMax()
   {
+    SubMaxCounter counter;
+    ISeqProperty& property = counter;
     int n = 0;
-    int max1 = INT_MIN;
-    int max2 = INT_MIN;
-    int c = 0;
 
     while (std::cin >> n)
     {
@@ -43,22 +114,7 @@ namespace nozdracheva
         break;
       }
 
-      if (c == INT_MAX)
-      {
-        throw std::overflow_error("Sequence is too long");
-      }
-
-      ++c;
-
-      if (n >= max1)
-      {
-        max2 = max1;
-        max1 = n;
-      }
-      else if (n > max2)
-      {
-        max2 = n;
-      }
+      property(n);
     }
 
     if (!std::cin && !std::cin.eof())
@@ -66,11 +122,6 @@ namespace nozdracheva
       throw std::invalid_argument("Not a number entered");
     }
 
-    if (c < 2)
-    {
-      throw std::overflow_error("Sequence is too short");
-    }
-
-    return max2;
+    return property();
   }
 }
